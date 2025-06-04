@@ -184,7 +184,9 @@ body {
   line-height: 1.4;
 }
 
-.modo-card button{
+/* Estilos para el botón original */
+.modo-card button, 
+.modo-card .modo-card-button {
   background-color: #65469B;
   color: white;
   border: none;
@@ -195,9 +197,13 @@ body {
   font-weight: bold;
   font-size: 0.95rem;
   transition: background-color 0.3s ease;
+  display: block;
+  text-align: center;
+  text-decoration: none;
 }
 
-.modo-card button:hover{
+.modo-card button:hover,
+.modo-card .modo-card-button:hover {
   background-color: #482688;
 }
 
@@ -208,4 +214,205 @@ body {
 }
 
 /* CHATCITO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
 
+.chat-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f2f6;
+}
+
+/* BARRA ARRIBA */
+.top-bar {
+  background-color: #50269e;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-title {
+  font-size: 1.5rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.user-icon, .settings-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.settings-menu {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  background-color: white;
+  border-radius: 5px;
+  padding: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.logout-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* ADENTRO */
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  background-color: #714EAD;
+  color: white;
+  padding: 20px;
+  width: 200px;
+}
+
+.sidebar h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.chat-list {
+  list-style: none;
+}
+
+.chat-list li {
+  background-color: #8f6cd3;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.chat-section {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chat-section h2 {
+  margin-bottom: 15px;
+  color: #50269e;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.message.ai {
+  background-color: #efe2fa;
+  align-self: flex-start;
+}
+
+.message.user {
+  background-color: #d9d9f3;
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+/* BARRITA */
+.input-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.input-bar input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.send-btn {
+  background-color: #65469B;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.upload-icon {
+  font-size: 1.5rem;
+  color: #65469B;
+  cursor: pointer;
+}
+
+/* AREA DERECHA ->->-> */
+.file-panel {
+  width: 220px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.file-panel h2 {
+  margin-bottom: 10px;
+  color: #50269e;
+}
+
+.file-box {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.file-box strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.file-box.pdf {
+  border-color: #d9534f;
+  background-color: #fbeaea;
+}
+
+.file-box.word {
+  border-color: #337ab7;
+  background-color: #eaf3fb;
+}
