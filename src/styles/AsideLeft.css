@@ -1,0 +1,18 @@
+.aside-left {
+    background-color: #714EAD;
+    color: white;
+    padding: 20px 30px;
+    transition: 0.3s ease-in-out;
+    width: 100px;
+}
+
+.aside-left:hover {
+    width: 300px;
+}
+
+.aside-left.open {
+    width: 300px;
+    /* flex: 1 0 300px; */
+}
+
+/* .aside-left { */
