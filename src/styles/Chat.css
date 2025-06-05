@@ -4,17 +4,6 @@
     /* justify-content: center; */
 }
 
-.chat-list {
-    list-style: none;
-}
-
-.chat-list li {
-    background-color: #8f6cd3;
-    margin: 8px 0;
-    padding: 8px;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
 .chat-section {
     padding: 20px;

@@ -1,9 +1,12 @@
 .aside-left {
+    --paddingHorizontal: 20px;
     background-color: #714EAD;
     color: white;
-    padding: 20px 30px;
+    padding: var(--paddingHorizontal) 30px;
     transition: 0.3s ease-in-out;
     width: 100px;
+    overflow-x: hidden;
+    position: relative;
 }
 
 .aside-left:hover {
@@ -13,6 +16,81 @@
 .aside-left.open {
     width: 300px;
     /* flex: 1 0 300px; */
+}
+
+.chat-list {
+    list-style: none;
+    transition: 0.25s;
+}
+
+.aside-left.open .nuevo-chat{
+    opacity: 1;
+}
+
+.aside-left:hover .nuevo-chat{
+    opacity: 1;
+}
+
+.nuevo-chat {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+    transition: 0.2s;
+    padding: 15px 20px;
+    border-radius: 30px;
+    min-width: 200px;
+    width: calc(100% + 28px);
+    position: relative;
+    left: -18px;
+    opacity: 0;
+}
+
+.nuevo-chat:hover {
+    opacity: 1;
+    background: #8f6cd3;
+}
+
+.chat-list li {
+    /* background-color: #8f6cd3; */
+    margin: 5px 0;
+    padding: 15px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    overflow: hidden;
+    left: -18px;
+    width: calc(100% + 18px);
+}
+
+.chat-list li:hover {
+    background-color: #8f6cd3;
+}
+
+
+.aside-left .chat-list {
+    width: calc(300px - (var(--paddingHorizontal) * 2.3));
+    opacity: 0;
+    margin-top: 20px;
+    /* display: none; */
+    /* flex-direction: column; */
+}
+
+.chat-list h2 {
+    margin-bottom: 15px;
+    font-size: 1.28rem;
+    font-weight: 700;
+}
+
+.aside-left:hover .chat-list {
+    opacity: 1;
+}
+
+.aside-left.open .chat-list {
+    opacity: 1;
 }
 
 /* .aside-left { */

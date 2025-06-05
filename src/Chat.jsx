@@ -68,6 +68,7 @@ function Chat() {
             <PromptInput handleSend={handleSend} />
           </div>
         </div>
+
         <AsideRight />
       </div>
     </div>
