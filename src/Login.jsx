@@ -1,9 +1,42 @@
-import './global.css';
-import { useState } from 'react';
+import "./global.css";
+import { useState } from "react";
+import { userLoginSchema } from "../schemas/user.schemas";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [errorMessageEmail, setErrorMessageEmail] = useState("");
+  const [errorMessagePassword, setErrorMessagePassword] = useState("");
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const parse = userLoginSchema.safeParse({
+      correo: email,
+      contraseña: password,
+    });
+    console.log(parse);
+
+    if (parse.success) {
+      console.log(parse.data);
+    } else {
+      setErrorMessageEmail(
+        parse.error.issues.find((issue) => issue.path[0] === "correo").message
+      );
+      setErrorMessagePassword(
+        parse.error.issues.find((issue) => issue.path[0] === "contraseña")
+          .message
+      );
+    }
+  };
 
   return (
     <div className="login-container">
@@ -11,29 +44,51 @@ function Login() {
         <div className="image-placeholder">
           <span>imagen we</span>
         </div>
-        <p className="left-text">
-          free fire es la mejor app del mundo
-        </p>
+        <p className="left-text">free fire es la mejor app del mundo</p>
       </div>
 
       <div className="right-section">
-        <h2 className="greeting">Hola!<br /><strong>¿En qué te ayudo hoy?</strong></h2>
-        <div className="login-box">
-          <h3>Iniciar Sesión</h3>
+        <h2 className="greeting">
+          Hola!
+          <br />
+          <strong>¿En qué te ayudo hoy?</strong>
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <div className="login-box">
+            <h3>Iniciar Sesión</h3>
 
-          <div className="form-group">
-            <label htmlFor="correo">Correo</label>
-            <input id="correo" type="email" placeholder="user@example.com" />
+            <div className="form-group">
+              <label htmlFor="correo">Correo</label>
+              <input
+                id="correo"
+                value={email}
+                onChange={handleEmailChange}
+                type="text"
+                placeholder="user@example.com"
+              />
+              {errorMessageEmail.length > 0 && (
+                <p style={{ color: "red" }}>{errorMessageEmail}</p>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="clave">Contraseña</label>
+              <input
+                id="clave"
+                value={password}
+                onChange={handlePasswordChange}
+                type="password"
+                placeholder="*********"
+              />
+              {errorMessagePassword.length > 0 && (
+                <p style={{ color: "red" }}>{errorMessagePassword}</p>
+              )}
+            </div>
+
+            <button type="submit">INICIAR SESIÓN</button>
+            <a href="/register">Crea una Cuenta!</a>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="clave">Contraseña</label>
-            <input id="clave" type="password" placeholder="••••••••" />
-          </div>
-
-          <button>INICIAR SESIÓN</button>
-          <a href="/register">Crea una Cuenta!</a>
-        </div>
+        </form>
       </div>
     </div>
   );
