@@ -1,6 +1,32 @@
+import { useState } from 'react';
 import './global.css';
 
 function Register() {
+  const [name, setName]=useState('');
+  const [email, setEmail]=useState('');
+  const [password, setPassword]=useState('');
+
+  const handleSubmit=async(e)=>{
+    e.preventDefault();
+
+    const formData = new URLSearchParams();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password);
+
+    try {
+      const res=await fetch('http://localhost:8080/users/',{
+        method:'POST',headers: {'Content-Type':'application/x-www-form-urlencoded',},body:formData.toString(),
+      });
+
+      const data = await res.json();
+      if(res.ok){
+        alert('Tu usuario ha sido creado, ahora podrás ingresar desde el login con tus credenciales.');
+        window.location.href = '/login';
+      }else{alert('Upsi, ha ocurrido un error: '+data.error);}
+    }catch(err){alert('Error en el servidor');console.error(err);}
+  };
+
   return (
     <div className="login-container">
       <div className="left-section">
@@ -13,28 +39,48 @@ function Register() {
       </div>
 
       <div className="right-section">
-        <h2 className="greeting">Bienvenido!<br /><strong>Crea tu cuenta</strong></h2>
-        <div className="login-box">
+        <h2 className="greeting">
+          Bienvenido!<br /><strong>Crea tu cuenta</strong>
+        </h2>
+        <form onSubmit={handleSubmit} className="login-box">
           <h3>Registro</h3>
 
           <div className="form-group">
             <label htmlFor="nombre">Nombre</label>
-            <input id="nombre" type="text" placeholder="Victor Elias Almeida" />
+            <input
+              id="nombre"
+              type="text"
+              placeholder="Victor Elias Almeida"
+              value={name}
+              onChange={(e)=>setName(e.target.value)}
+            />
           </div>
 
           <div className="form-group">
             <label htmlFor="email">Correo</label>
-            <input id="email" type="email" placeholder="correo@ejemplo.com" />
+            <input
+              id="email"
+              type="email"
+              placeholder="correo@ejemplo.com"
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
+            />
           </div>
 
           <div className="form-group">
             <label htmlFor="password">Contraseña</label>
-            <input id="password" type="password" placeholder="••••••••" />
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
-          <button>CREAR CUENTA</button>
+          <button type="submit">CREAR CUENTA</button>
           <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
-        </div>
+        </form>
       </div>
     </div>
   );

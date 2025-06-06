@@ -1,44 +1,50 @@
 import "./global.css";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { userLoginSchema } from "../schemas/user.schemas";
 
-function Login() {
+function Login(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMessageEmail, setErrorMessageEmail] = useState("");
   const [errorMessagePassword, setErrorMessagePassword] = useState("");
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
+  const handleEmailChange=(e)=>{setEmail(e.target.value);};
+  const handlePasswordChange=(e)=>{setPassword(e.target.value);};
+  const handleSubmit=async(e)=>{
     e.preventDefault();
-    const parse = userLoginSchema.safeParse({
+    setErrorMessageEmail("");
+    setErrorMessagePassword("");
+    const parse=userLoginSchema.safeParse({
       correo: email,
       contraseña: password,
     });
-    console.log(parse);
 
-    if (parse.success) {
-      console.log(parse.data);
-    } else {
-      setErrorMessageEmail(
-        parse.error.issues.find((issue) => issue.path[0] === "correo").message
-      );
-      setErrorMessagePassword(
-        parse.error.issues.find((issue) => issue.path[0] === "contraseña")
-          .message
-      );
+    if(parse.success){
+      try{
+        const response=await fetch("http://localhost:8080/users/login",{
+          method:"POST",
+          headers:{"Content-Type": "application/json",},
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        });
+
+        if(!response.ok){
+          const data = await response.json();
+          alert(data.error||"Error al iniciar sesión");
+          return;
+        }
+        window.location.href = "/main/modo";
+      }catch(error){console.error("Error al hacer login:", error);alert("Error del servidor");}
+    }else{
+      setErrorMessageEmail(parse.error.issues.find((issue)=>issue.path[0]==="correo")?.message||"");
+      setErrorMessagePassword(parse.error.issues.find((issue)=>issue.path[0]==="contraseña")?.message||"");
     }
   };
 
-  return (
+  return(
     <div className="login-container">
       <div className="left-section">
         <div className="image-placeholder">
@@ -66,22 +72,35 @@ function Login() {
                 type="text"
                 placeholder="user@example.com"
               />
-              {errorMessageEmail.length > 0 && (
-                <p style={{ color: "red" }}>{errorMessageEmail}</p>
+              {errorMessageEmail.length>0&&(
+                <p style={{ color:"red"}}>{errorMessageEmail}</p>
               )}
             </div>
 
-            <div className="form-group">
+            <div className="form-group" style={{ position: "relative"}}>
               <label htmlFor="clave">Contraseña</label>
               <input
                 id="clave"
                 value={password}
                 onChange={handlePasswordChange}
-                type="password"
+                type={showPassword?"text" : "password"}
                 placeholder="*********"
               />
-              {errorMessagePassword.length > 0 && (
-                <p style={{ color: "red" }}>{errorMessagePassword}</p>
+              <span onClick={()=>setShowPassword(!showPassword)}
+              style={{
+                  position: "absolute",
+                  right: 20,
+                  top: "45px",
+                  cursor: "pointer",
+                  userSelect: "none",
+                  color: "#666"
+                }}
+                aria-label={showPassword?"Ocultar contraseña":"Mostrar contraseña"}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+              {errorMessagePassword.length>0&&(
+                <p style={{ color:"red"}}>{errorMessagePassword}</p>
               )}
             </div>
 
