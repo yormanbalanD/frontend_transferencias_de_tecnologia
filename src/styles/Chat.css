@@ -1,6 +1,7 @@
 .main-content {
     display: flex;
     overflow: hidden;
+    height: 100%;
     /* justify-content: center; */
 }
 
@@ -11,6 +12,7 @@
     display: flex;
     flex-direction: column;
     max-width: 800px;
+    width: 100%;
     justify-content: space-between;
 }
 
@@ -92,42 +94,6 @@
     cursor: pointer;
 }
 
-/* AREA DERECHA ->->-> */
-.file-panel {
-    width: 220px;
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
-}
-
-.file-panel h2 {
-    margin-bottom: 10px;
-    color: #50269e;
-}
-
-.file-box {
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.file-box strong {
-    display: block;
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-}
-
-.file-box.pdf {
-    border-color: #d9534f;
-    background-color: #fbeaea;
-}
-
-.file-box.word {
-    border-color: #337ab7;
-    background-color: #eaf3fb;
-}
 
 .chat-container {
   height: 100vh;

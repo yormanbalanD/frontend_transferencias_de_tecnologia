@@ -4,7 +4,7 @@ import { FaArrowRight } from "react-icons/fa6";
 import TextareaAutosize from "react-textarea-autosize";
 import { FiPaperclip } from "react-icons/fi";
 
-export default function PromptInput({ handleSend }) {
+export default function PromptInput({ handleSend, appendFiles }) {
   const [input, setInput] = useState("");
   const inputFileRef = useRef();
 
@@ -12,8 +12,13 @@ export default function PromptInput({ handleSend }) {
     setInput(e.target.value);
   };
   const handleChangeInputFile = (e) => {
-    console.log(e.target.files);
+    appendFiles(e.target.files);
   };
+
+  const handleSendMessage = () => {
+    setInput("");
+    handleSend(input);
+  }
 
   return (
     <div className="prompt-input">
@@ -27,7 +32,6 @@ export default function PromptInput({ handleSend }) {
           placeholder="Escribe tu mensaje..."
           value={input}
           onChange={handleChangeInputChat}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
           minRows={2}
           maxRows={5}
         />
@@ -56,7 +60,7 @@ export default function PromptInput({ handleSend }) {
           <FiPaperclip size={15} title="Subir archivo" />
           Subir Archivo
         </div>
-        <button className="send-btn" onClick={handleSend}>
+        <button className="send-btn" onClick={handleSendMessage}>
           <FaArrowRight size={18} />
         </button>
       </div>

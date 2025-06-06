@@ -1,25 +1,18 @@
 import React from "react";
+import "../styles/AsideRight.css";
 
-export default function AsideRight() {
+export default function AsideRight({ files, removeFile }) {
   return (
     <div className="file-panel">
       <h2>Archivos cargados</h2>
-      <div className="file-box pdf">
-        <strong>PDF</strong>
-        <span>hola.pdf</span>
-      </div>
-      <div className="file-box word">
-        <strong>WORD</strong>
-        <span>hoja.docx</span>
-      </div>
-      <div className="file-box pdf">
-        <strong>PDF</strong>
-        <span>kede.pdf</span>
-      </div>
-      <div className="file-box pdf">
-        <strong>PDF</strong>
-        <span>colitacola.pdf</span>
-      </div>
+      {files && files.length === 0 && <p>No has cargado ningún archivo</p>}
+      {files && files.map((file, index) => (
+        <div className="file-box" key={index}>
+          <strong>{file.type}</strong>
+          <span>{file.name}</span>
+          <button onClick={() => removeFile(file)}>Eliminar</button>
+        </div>
+      ))}
     </div>
   );
 }
