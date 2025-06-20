@@ -5,7 +5,6 @@
     /* justify-content: center; */
 }
 
-
 .chat-section {
     padding: 20px;
     padding-bottom: 40px;
@@ -16,6 +15,12 @@
     justify-content: space-between;
 }
 
+.chat-titles{
+    flex-grow: 1;
+    text-align: center; 
+    padding: 0 20px; 
+}
+
 .chat-section h2 {
     margin-bottom: 15px;
     color: #50269e;
@@ -23,6 +28,21 @@
     font-size: 2rem;
     font-weight: 800;
     text-transform: uppercase;
+}
+.chat-section h3 {
+    margin-bottom: 15px;
+    color: #af9bd4;
+    text-align: center;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .messages {
@@ -94,10 +114,37 @@
     cursor: pointer;
 }
 
-
 .chat-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #f1f2f6;
+}
+
+/* CHATS CON PASOS Y CAPITULOS*/
+.chat-navigation {
+    display: flex;
+    gap: 10px; 
+}
+
+.nav-button {
+    background-color: #916fce;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-button:hover {
+    background-color: #482688;
+}
+
+.nav-button:disabled {
+    background-color: #c8b9e6; 
+    cursor: not-allowed;
+    opacity: 0.7;
 }
