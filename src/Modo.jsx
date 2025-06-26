@@ -12,7 +12,7 @@ function Modo() {
           <FaBriefcase className="modo-icon" />
           <h2>Modo Profesional</h2>
           <p>El modo profesional se basa en examinar el trabajo por sus respectivos capítulos.</p>
-          <Link to="/main/chat" className="modo-card-button">Elegir</Link>
+          <Link to="/main/profesional" className="modo-card-button">Elegir</Link>
         </div>
 
         <div className="modo-card">
@@ -26,7 +26,7 @@ function Modo() {
           <FaRoute className="modo-icon" />
           <h2>Ruta 10 Pasos</h2>
           <p>La ruta de 10 pasos se basa en los 10 pasos de los objetivos específicos/generales de un trabajo.</p>
-          <Link to="/main/chat" className="modo-card-button">Elegir</Link>
+          <Link to="/main/pasos" className="modo-card-button">Elegir</Link>
         </div>
       </div>
     </div>
