@@ -23,15 +23,24 @@
     transition: 0.25s;
 }
 
-.aside-left.open .nuevo-chat{
+.barra-separador {
+    opacity: 0;
+    margin-bottom: 20px;
+    color: #ffffff98;
+    transition: .2s;
+}
+
+.aside-left.open .cerrar-sesion-button,
+.aside-left:hover .cerrar-sesion-button {
     opacity: 1;
 }
 
-.aside-left:hover .nuevo-chat{
+.aside-left:hover .barra-separador,
+.aside-left.open .barra-separador {
     opacity: 1;
 }
 
-.nuevo-chat {
+.cerrar-sesion-button {
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -39,22 +48,24 @@
     margin-bottom: 40px;
     opacity: 0.9;
     transition: 0.2s;
-    padding: 15px 20px;
+    padding: 8px 20px;
     border-radius: 30px;
     min-width: 200px;
-    width: calc(100% + 28px);
     position: relative;
-    left: -18px;
+    justify-content: center;
+    width: 100%;
     opacity: 0;
+    border: none;
 }
 
-.nuevo-chat:hover {
+.cerrar-sesion-button:hover {
+    transition-delay: .2s;
     opacity: 1;
-    background: #8f6cd3;
+    background: #fff
 }
+
 
 .chat-list li {
-    /* background-color: #8f6cd3; */
     margin: 5px 0;
     padding: 15px 20px;
     border-radius: 30px;

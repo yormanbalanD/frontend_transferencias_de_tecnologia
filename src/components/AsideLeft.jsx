@@ -2,27 +2,15 @@ import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaEdit } from "react-icons/fa";
 import "../styles/AsideLeft.css";
-
-const lastChats = [
-  {
-    id: 1,
-    title: "yailin y anuel volverán?",
-    date: "2023-03-01",
-  },
-  {
-    id: 2,
-    title: "quien es mas migajero, francisco javier o haley bieber",
-    date: "2023-03-02",
-  },
-  {
-    id: 3,
-    title: "ayudame hacer mi tesis 700 paginas full referencias",
-    date: "2023-03-03",
-  },
-];
+import { FaLockOpen } from "react-icons/fa";
+import { IoMdBriefcase } from "react-icons/io";
+import { IoFootstepsSharp } from "react-icons/io5";
+import { FaUserAlt } from "react-icons/fa";
+import { useCookies } from "react-cookie";
 
 export default function AsideLeft() {
   const [open, setOpen] = React.useState(false);
+  const [_, setCookie] = useCookies(["user"]);
 
   const handleClickBurger = () => {
     setOpen(!open);
@@ -30,9 +18,11 @@ export default function AsideLeft() {
 
   return (
     <div className={`aside-left ${open ? "open" : ""}`}>
-      <div style={{
-        marginBottom: "40px"
-      }}>
+      <div
+        style={{
+          marginBottom: "40px",
+        }}
+      >
         <GiHamburgerMenu
           style={{
             cursor: "pointer",
@@ -43,27 +33,61 @@ export default function AsideLeft() {
         />
       </div>
       <div>
-        <div className="nuevo-chat">
-          <FaEdit  size={23}/>
-          Nuevo Chat
-        </div>
         <ul className="chat-list">
-          <h2>Recientes</h2>
-          {lastChats.map((chat, index) => (
-            <li key={index}>
-              <span
-                style={{
-                  width: 500,
-                  display: "block",
-                }}
-              >
-                {chat.title.length > 30
-                  ? chat.title.substring(0, 30) + "..."
-                  : chat.title}
-              </span>
-            </li>
-          ))}
+          <li>
+            <span
+              style={{
+                width: 500,
+                display: "flex",
+                gap: 8,
+                alignItems: "center",
+              }}
+            >
+              <FaLockOpen size={25} className="lock-icon" />
+              Chat Libre
+            </span>
+          </li>
+          <li>
+            <span
+              style={{
+                width: 500,
+                display: "flex",
+                gap: 8,
+                alignItems: "center",
+              }}
+            >
+              <IoMdBriefcase size={25} className="briefcase-icon" />
+              Chat Profesional
+            </span>
+          </li>
+          <li>
+            <span
+              style={{
+                width: 500,
+                display: "flex",
+                gap: 8,
+                alignItems: "center",
+              }}
+            >
+              <IoFootstepsSharp size={25} className="steps-icon" />
+              Chat por Pasos
+            </span>
+          </li>
         </ul>
+
+        <hr className="barra-separador" />
+
+        <button
+          className="cerrar-sesion-button"
+          onClick={() => {
+            setCookie("user", null);
+            alert("Sesión cerrada");
+            window.location.replace("/login");
+          }}
+        >
+          <FaUserAlt size={18} className="user-icon" />
+          Cerrar Sesion
+        </button>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { userLoginSchema } from "../schemas/user.schemas";
 import { useCookies } from "react-cookie";
+import Logo from "./assets/logoTutorIA.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -65,10 +66,8 @@ function Login() {
   return (
     <div className="login-container">
       <div className="left-section">
-        <div className="image-placeholder">
-          <span>imagen we</span>
-        </div>
-        <p className="left-text">free fire es la mejor app del mundo</p>
+        <img src={Logo} alt="Logo de Tutor IA" width="400px" />
+        <p className="left-text">Tu asistente inteligente para una tesis impecable. ¡Inicia sesión y transforma tu investigación!</p>
       </div>
 
       <div className="right-section">

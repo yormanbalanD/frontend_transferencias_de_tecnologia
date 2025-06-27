@@ -1,146 +1,113 @@
 import "./global.css";
 import "react-toastify/ReactToastify.css";
 import "./styles/Chat.css";
-import { useState } from "react"; // Eliminado useEffect y useCookies si no se usan aquí
+import { useState } from "react";
 import PromptInput from "./components/PromptInput";
 import Message from "./components/Message";
 import AsideLeft from "./components/AsideLeft";
 import AsideRight from "./components/AsideRight";
 import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
 
 const subtitulosPorCapitulo = [
     "Capítulo 1: Planteamiento del problema",
     "Capítulo 2: Marco Teórico",
-    "Capítulo 3: Marco Metologíco",
+    "Capítulo 3: Marco Metodológico",
     "Capítulo 4: Resultados",
-    "Capítulo 5: Discución",
-    "Capítulo 6: Conclusiones"
+    "Capítulo 5: Discusión",
+];
+
+const idsDeChatPorCapitulo = [2, 3, 4, 5, 6, 
 ];
 
 function Profesional() {
     const [sendingMessage, setSendingMessage] = useState(false);
     const [message, setMessage] = useState([]);
     const [files, setFiles] = useState([]);
+    const [capituloActual, setCapituloActual] = useState(1);
+    const totalCapitulos = 5;
 
-    const [CapituloActual, setCapituloActual] = useState(1);
-    const totalCapitulos = 6; 
+    const [cookies] = useCookies(['user']);
 
     const handleSend = async (prompt) => {
-        try {
-            if (files.length === 0) {
-                toast.error("No has cargado ningún archivo");
-                return;
-            }
+        const userId = cookies.user?.id;
 
-            setSendingMessage(true);
+        const chatId = idsDeChatPorCapitulo[capituloActual - 1];
+
+        if (!userId) {
+            toast.error("Error de autenticación. Por favor, inicia sesión.");
+            return;
+        }
+
+        const temp1 = [...message, { response: prompt, sender: "user" }];
+        setMessage(temp1);
+        setSendingMessage(true);
+
+        try {
+            const url = `http://localhost:8080/chat/prompt/${chatId}/${userId}/file`;
+
             const formBody = new FormData();
             formBody.append("prompt", prompt);
-            formBody.append("file", files[0]);
 
-            const temp1 = [...message, { response: prompt, sender: "user" }];
-            setMessage(temp1);
+            if (files.length > 0) {
+                formBody.append("file", files[0]);
+            }
 
-            const request = await fetch("http://localhost:8080/chat/prompt/file", {
-                method: "POST",
-                body: formBody,
-            });
+            const options = { method: "POST", body: formBody };
+            const request = await fetch(url, options);
+            const responseData = await request.json();
 
-            if (request.status === 200) {
-                const response = await request.json();
-                response.sender = "ai";
-                setMessage([...temp1, response]);
+            if (request.ok) {
+                responseData.sender = "ai";
+                setMessage([...temp1, responseData]);
             } else {
-                toast.error("Error al enviar el mensaje");
+                toast.error(responseData.error || "Error al enviar el mensaje");
+                setMessage(currentMessages => currentMessages.slice(0, -1));
             }
         } catch (error) {
             console.log(error);
-            toast.error("Ocurrió un error inesperado.");
+            toast.error("Error de red o al conectar con el servidor.");
+            setMessage(currentMessages => currentMessages.slice(0, -1));
         } finally {
             setSendingMessage(false);
         }
     };
 
-    const appendFiles = (newFiles) => {
-        setFiles([...newFiles]);
-    };
-
-    const removeFile = (fileToRemove) => {
-        setFiles(files.filter((f) => f !== fileToRemove));
-    };
-
-    const handleSiguiente = () => {
-        setCapituloActual(prevCapitulo => Math.min(prevCapitulo + 1, totalCapitulos));
-    };
-
-    const handleAnterior = () => {
-        setCapituloActual(prevCapitulo => Math.max(prevCapitulo - 1, 1));
-    };
+    const appendFiles = (newFiles) => { setFiles([...newFiles]); };
+    const removeFile = (fileToRemove) => { setFiles(files.filter((f) => f !== fileToRemove)); };
+    const handleSiguiente = () => { setCapituloActual(prev => Math.min(prev + 1, totalCapitulos)); };
+    const handleAnterior = () => { setCapituloActual(prev => Math.max(prev - 1, 1)); };
 
     return (
         <div className="chat-container">
             <div className="main-content">
                 <AsideLeft />
-                <div
-                    style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        flex: 2,
-                    }}
-                >
+                <div style={{ width: "100%", display: "flex", justifyContent: "center", flex: 2 }}>
                     <div className="chat-section">
                         <div className="chat-header">
                             <div className="chat-titles">
                                 <h2>Chat Ruta Profesional</h2>
-                                <h3>{subtitulosPorCapitulo[CapituloActual - 1]}</h3>
+                                <h3>{subtitulosPorCapitulo[capituloActual - 1]}</h3>
                             </div>
-                            
                             <div className="chat-navigation">
-                                <button 
-                                    className="nav-button" 
-                                    onClick={handleAnterior}
-                                    disabled={CapituloActual === 1} 
-                                >
-                                    Anterior
-                                </button>
-                                <button 
-                                    className="nav-button" 
-                                    onClick={handleSiguiente}
-                                    disabled={CapituloActual === totalCapitulos} 
-                                >
-                                    Siguiente
-                                </button>
+                                <button className="nav-button" onClick={handleAnterior} disabled={capituloActual === 1}>Anterior</button>
+                                <button className="nav-button" onClick={handleSiguiente} disabled={capituloActual === totalCapitulos}>Siguiente</button>
                             </div>
                         </div>
-
                         <div className="messages">
-                            {message &&
-                                message.map((msg, index) => (
-                                    <Message
-                                        key={index}
-                                        sender={msg.sender}
-                                        message={msg.response}
-                                    />
-                                ))}
-                            {sendingMessage && (
-                                <div
-                                    style={{
-                                        width: "350px",
-                                    }}
-                                >
-                                    <Message sender="ia" loading={true} />
-                                </div>
-                            )}
+                            {message.map((msg, index) => (
+                                <Message key={index} sender={msg.sender} message={msg.response} />
+                            ))}
+                            {sendingMessage && <Message sender="ia" loading={true} />}
                         </div>
-
                         <PromptInput handleSend={handleSend} appendFiles={appendFiles} />
                     </div>
                 </div>
-
                 <AsideRight files={files} removeFile={removeFile} />
             </div>
         </div>
     );
 }
+
 
 export default Profesional;

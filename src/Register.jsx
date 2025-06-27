@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./global.css";
 import { useCookies } from "react-cookie";
+import Logo from "./assets/logoTutorIA.png";
 
 function Register() {
   const [name, setName] = useState("");
@@ -44,10 +45,8 @@ function Register() {
   return (
     <div className="login-container">
       <div className="left-section">
-        <div className="image-placeholder">
-          <span>imagen we</span>
-        </div>
-        <p className="left-text">Regístrate y únete a la mejor experiencia</p>
+        <img src={Logo} alt="Logo de Tutor IA" width="400px" />
+        <p className="left-text">¿Listo para simplificar tu tesis? Crea una cuenta y desbloquea el poder de la inteligencia artificial en tu investigación</p>
       </div>
 
       <div className="right-section">
