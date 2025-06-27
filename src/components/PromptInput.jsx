@@ -18,7 +18,7 @@ export default function PromptInput({ handleSend, appendFiles }) {
   const handleSendMessage = () => {
     setInput("");
     handleSend(input);
-  }
+  };
 
   return (
     <div className="prompt-input">
@@ -55,6 +55,7 @@ export default function PromptInput({ handleSend, appendFiles }) {
             style={{
               display: "none",
             }}
+            accept="application/pdf, text/plain, text/markdown, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, image/png, image/jpeg, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation"
             onChange={handleChangeInputFile}
           />
           <FiPaperclip size={15} title="Subir archivo" />

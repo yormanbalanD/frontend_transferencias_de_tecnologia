@@ -8,6 +8,7 @@ import AsideLeft from "./components/AsideLeft";
 import AsideRight from "./components/AsideRight";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
+import MessageList from "./components/MessageList";
 
 function Chat() {
   // const [showSettings, setShowSettings] = useState(false);
@@ -31,10 +32,19 @@ function Chat() {
 
       setMessage(temp1);
 
-      const request = await fetch("http://localhost:8080/chat/prompt/file", {
-        method: "POST",
-        body: formBody,
-      });
+
+      let request;
+      if (files.length != 0) { 
+        request = await fetch("http://localhost:8080/chat/prompt/file", {
+          method: "POST",
+          body: formBody,
+        });
+      } else {
+        request = await fetch("http://localhost:8080/chat/prompt", {
+          method: "POST",
+          body: formBody,
+        });
+      }
 
       if (request.status === 200) {
         const response = await request.json();
@@ -89,14 +99,7 @@ function Chat() {
           <div className="chat-section">
             <h2>Chat libre</h2>
             <div className="messages">
-              {message &&
-                message.map((msg, index) => (
-                  <Message
-                    key={index}
-                    sender={msg.sender}
-                    message={msg.response}
-                  />
-                ))}
+              <MessageList messages={message} />
               {sendingMessage && (
                 <div
                   style={{
