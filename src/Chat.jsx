@@ -1,7 +1,7 @@
 import "./global.css";
 import "react-toastify/ReactToastify.css";
 import "./styles/Chat.css";
-import { useEffect, useState } from "react";
+import { useState } from "react"; 
 import PromptInput from "./components/PromptInput";
 import Message from "./components/Message";
 import AsideLeft from "./components/AsideLeft";
@@ -10,44 +10,50 @@ import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 
 function Chat() {
-  // const [showSettings, setShowSettings] = useState(false);
   const [sendingMessage, setSendingMessage] = useState(false);
   const [message, setMessage] = useState([]);
   const [files, setFiles] = useState([]);
 
-  const handleSend = async (prompt) => {
-    try {
-      if (files.length == 0) {
-        toast.error("No has cargado ningún archivo");
-        return;
-      }
+  const [cookies] = useCookies(['user']);
 
-      setSendingMessage(true);
+  const handleSend = async (prompt) => {
+
+    const userId = cookies.user?.id; 
+    const chatId = 1; 
+
+    if (!userId) {
+      toast.error("Error de autenticación: No se pudo obtener el ID del usuario desde la cookie. Por favor, inicia sesión.");
+      return;
+    }
+
+    const temp1 = [...message, { response: prompt, sender: "user" }];
+    setMessage(temp1);
+    setSendingMessage(true);
+
+    try {
+      const url = `http://localhost:8080/chat/prompt/${chatId}/${userId}/file`;
       const formBody = new FormData();
       formBody.append("prompt", prompt);
-      formBody.append("file", files[0]);
+      if (files.length > 0) {
+        formBody.append("file", files[0]);
+      }
+      const options = { method: "POST", body: formBody };
+      const request = await fetch(url, options);
+      const responseData = await request.json();
 
-      const temp1 = [...message, { response: prompt, sender: "user" }];
-
-      setMessage(temp1);
-
-      const request = await fetch("http://localhost:8080/chat/prompt/file", {
-        method: "POST",
-        body: formBody,
-      });
-
-      if (request.status === 200) {
-        const response = await request.json();
-        response.sender = "ai";
-
-        setMessage([...temp1, response]);
-        setSendingMessage(false);
+      if (request.ok) {
+        responseData.sender = "ai";
+        setMessage([...temp1, responseData]);
+        setFiles([]);
       } else {
-        toast.error("Error al enviar el mensaje");
-        setSendingMessage(false);
+        toast.error(responseData.error || "Error al enviar el mensaje");
+        setMessage(currentMessages => currentMessages.slice(0, -1));
       }
     } catch (error) {
       console.log(error);
+      toast.error("Error de red o al conectar con el servidor.");
+      setMessage(currentMessages => currentMessages.slice(0, -1));
+    } finally {
       setSendingMessage(false);
     }
   };
