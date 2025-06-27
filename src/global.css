@@ -30,14 +30,21 @@ body {
 
 .image-placeholder {
   background-color: #eaeaea;
-  width: 80%;
-  height: 300px;
+  width: 100%;
+  height: 120%;
   display: flex;
   justify-content: center;
   align-items: center;
   color: black;
   margin-bottom: 20px;
   font-size: 0.9rem;
+  border-radius: 15px;
+}
+
+.placeholder-img {
+  max-width: 100%;  
+  max-height: 100%; 
+  object-fit: contain;
 }
 
 .left-text {
@@ -122,6 +129,32 @@ body {
   margin-bottom: 5px;
   color: #999999;
   font-size: 16px;
+}
+
+.left-text-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;   
+  text-align: center;   
+}
+
+.hero-title {
+  color: #E6E8ED;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  margin: 0; 
+}
+
+.hero-subtitle {
+  color: #e0d6ff; 
+  font-family: 'Poppins', sans-serif; 
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-top: 0.5rem; 
 }
 
 /* ELEGIR MODO */
