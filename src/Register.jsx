@@ -1,30 +1,44 @@
-import { useState } from 'react';
-import './global.css';
+import { useState } from "react";
+import "./global.css";
+import { useCookies } from "react-cookie";
 
 function Register() {
-  const [name, setName]=useState('');
-  const [email, setEmail]=useState('');
-  const [password, setPassword]=useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
-  const handleSubmit=async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new URLSearchParams();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('password', password);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
 
     try {
-      const res=await fetch('http://localhost:8080/users/',{
-        method:'POST',headers: {'Content-Type':'application/x-www-form-urlencoded',},body:formData.toString(),
+      const res = await fetch("http://localhost:8080/users/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString(),
       });
 
       const data = await res.json();
-      if(res.ok){
-        alert('Tu usuario ha sido creado, ahora podrás ingresar desde el login con tus credenciales.');
-        window.location.href = '/login';
-      }else{alert('Upsi, ha ocurrido un error: '+data.error);}
-    }catch(err){alert('Error en el servidor');console.error(err);}
+      if (res.ok) {
+        alert(
+          "Tu usuario ha sido creado"
+        );
+
+        console.log(data);
+        setCookie("user", { id: data.id });
+        window.location.href = "/main/modo";
+      } else {
+        alert("Upsi, ha ocurrido un error: " + data.error);
+      }
+    } catch (err) {
+      alert("Error en el servidor");
+      console.error(err);
+    }
   };
 
   return (
@@ -33,14 +47,14 @@ function Register() {
         <div className="image-placeholder">
           <span>imagen we</span>
         </div>
-        <p className="left-text">
-          Regístrate y únete a la mejor experiencia
-        </p>
+        <p className="left-text">Regístrate y únete a la mejor experiencia</p>
       </div>
 
       <div className="right-section">
         <h2 className="greeting">
-          Bienvenido!<br /><strong>Crea tu cuenta</strong>
+          Bienvenido!
+          <br />
+          <strong>Crea tu cuenta</strong>
         </h2>
         <form onSubmit={handleSubmit} className="login-box">
           <h3>Registro</h3>
@@ -52,7 +66,7 @@ function Register() {
               type="text"
               placeholder="Victor Elias Almeida"
               value={name}
-              onChange={(e)=>setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
 
@@ -63,7 +77,7 @@ function Register() {
               type="email"
               placeholder="correo@ejemplo.com"
               value={email}
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
