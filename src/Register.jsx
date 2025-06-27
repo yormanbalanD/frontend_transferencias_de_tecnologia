@@ -45,9 +45,12 @@ function Register() {
     <div className="login-container">
       <div className="left-section">
         <div className="image-placeholder">
-          <span>imagen we</span>
+            <img src="/ImagenLateralRegistrate.png"  alt="Ilustración de un asistente IA"  className="placeholder-img"  />
         </div>
-        <p className="left-text">Regístrate y únete a la mejor experiencia</p>
+        <div className="left-text-container">
+          <p className="hero-title">Regístrate Ahora</p>
+          <p className="hero-subtitle">y comienza a recibir TutorIA</p>
+        </div>
       </div>
 
       <div className="right-section">
